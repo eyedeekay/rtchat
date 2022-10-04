@@ -1,1 +1,7 @@
 .vscode/launch.json
+onionkeys
+tlskeys
+i2pkeys
+*.pem
+*.private
+server

@@ -112,15 +112,21 @@ func (i *I2PRelayAddressGenerator) AllocatePacketConn(network string, requestedP
 
 // Allocate a Conn (TCP) RelayAddress
 func (i *I2PRelayAddressGenerator) AllocateConn(network string, requestedPort int) (net.Conn, net.Addr, error) {
-	/*sess, err := sam.I2PStreamSession("rtcchat-turn-tcp"+strconv.Itoa(requestedPort), i.SAMAddress, "rtcchat-turn-tcp"+strconv.Itoa(requestedPort))
+	sess, err := sam.I2PStreamSession("rtcchat-turn-tcp"+strconv.Itoa(requestedPort), i.SAMAddress, "rtcchat-turn-tcp"+strconv.Itoa(requestedPort))
 	if err != nil {
 		return nil, nil, err
 	}
 	relayAddr, ok := sess.LocalAddr().(*i2pkeys.I2PAddr)
 	if !ok {
-		return nil, nil, errNilConn
+		return nil, nil, fmt.Errorf("nil connection error")
 	}
-	conn, err := sess.Dial() ???? TODO: figure this out
-	return conn, relayAddr, nil*/
-	return nil, nil, fmt.Errorf("I2PRelayAddressGenerator: AllocateConn not implemented")
+	list, err := sess.Listen()
+	if err != nil {
+		return nil, nil, err
+	}
+	conn, err := list.Accept()
+	if err != nil {
+		return nil, nil, err
+	}
+	return conn, relayAddr, nil
 }
