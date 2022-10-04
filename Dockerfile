@@ -10,4 +10,4 @@ COPY --from=builder /go/src/app/rtchat .
 COPY --from=builder /go/src/app/static ./static
 COPY --from=builder /go/src/app/templates ./templates
 EXPOSE 5000 3478/udp
-CMD ["sh", "-c", "./rtchat]
+CMD ["sh", "-c", "./rtchat"]
