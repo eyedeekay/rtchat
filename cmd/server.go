@@ -81,14 +81,19 @@ func Serve(e Flags, appname string) string {
 		if err := s.Serve(l); err != http.ErrServerClosed {
 			log.Fatal(err)
 		}
+		log.Println("Server closed")
 	}()
-
-	defer s.Close()
 
 	logger.Info(`HTTPS server launched:
 	Listening:	https://%s`, e.Web.Address())
 
 	return fmt.Sprintf("https://%s", l.Addr().(i2pkeys.I2PAddr).Base32())
+}
+
+func Close() {
+	defer garlic.Close()
+	s.Close()
+	l.Close()
 }
 
 // Flags represents options which can be passed to internal packages.

@@ -36,6 +36,7 @@ func main() {
 	flag.Parse()
 	e.Turn.I2p = e.I2p
 	addr := server.Serve(e, *e.Turn.RealmString)
+	defer server.Close()
 	logger := logging.New(false)
 	logger.Info(addr)
 
