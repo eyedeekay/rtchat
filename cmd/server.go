@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 
 	/*"net"*/
 
@@ -60,7 +61,12 @@ func Serve(e Flags) string {
 	e.Web.Host = l.Addr().(i2pkeys.I2PAddr).Base32()
 	// Launch the HTTP server!
 
-	s := &http.Server{Handler: r.Handler(), Addr: l.Addr().(i2pkeys.I2PAddr).Base32()}
+	s := &http.Server{
+		Handler:      r.Handler(),
+		Addr:         l.Addr().(i2pkeys.I2PAddr).Base32(),
+		ReadTimeout:  50 * time.Second,
+		WriteTimeout: 100 * time.Second,
+	}
 
 	go func() {
 		if err := s.Serve(l); err != http.ErrServerClosed {
