@@ -23,39 +23,37 @@ import (
 var garlic *onramp.Garlic
 var l net.Listener
 var s *http.Server
+var r handler.Router
+var turnServer turn.Server
+var serv service.Service
+var logger logging.Logger
+var err error
 
 func Serve(e Flags, appname string) string {
-	e.Turn.I2p = e.I2p
-
-	logger := logging.New(false)
-
-	//if *e.debug {
-	//	logger.Info("launched in debug mode, extra output is expected")
-	//}
+	logger = logging.New(false)
 
 	// Instantiates the service that creates rooms
-	service := service.New()
+	serv = service.New()
 
 	// Instantiate and launch the turn server
-	turnServer, err := turn.New(service, logger, &e.Turn)
+	turnServer, err = turn.New(serv, logger, &e.Turn)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer turnServer.Close()
+	//defer turnServer.Close()
 
 	// Instantiate the application router
-	r, err := handler.New(service, logger, &e.Turn)
+	r, err = handler.New(serv, logger, &e.Turn)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	defer r.Close()
+	//defer r.Close()
 	garlic, err = onramp.NewGarlic(appname, e.Turn.SAMAddress(),
 		[]string{"inbound.length=1", "outbound.length=1",
-			"inbound.lengthVariance=0", "outbound.lengthVariance=0",
 			"inbound.backupQuantity=2", "outbound.backupQuantity=2",
 			"inbound.quantity=3", "outbound.quantity=3"},
 	)
@@ -66,7 +64,7 @@ func Serve(e Flags, appname string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer l.Close()
+	//defer l.Close()
 	e.Web.Host = l.Addr().(i2pkeys.I2PAddr).Base32()
 	// Launch the HTTP server!
 
@@ -91,9 +89,11 @@ func Serve(e Flags, appname string) string {
 }
 
 func Close() {
-	defer garlic.Close()
+	garlic.Close()
 	s.Close()
 	l.Close()
+	r.Close()
+	turnServer.Close()
 }
 
 // Flags represents options which can be passed to internal packages.
@@ -101,7 +101,7 @@ type Flags struct {
 	//debug *bool
 	Turn TurnFlags
 	Web  WebFlags
-	I2p  I2pFlags
+	//I2p  I2pFlags
 	/*	tls   tlsFlags*/
 }
 

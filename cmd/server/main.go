@@ -20,23 +20,22 @@ import (
 func main() {
 	e := server.Flags{
 		Turn: server.TurnFlags{
-			RealmString:    flag.String("realm", "rtchat.i2p", "Realm used by the turn server."),
+			RealmString:    flag.String("realm", "rtchat.io", "Realm used by the turn server."),
 			PublicIPString: flag.String("turn-ip", "127.0.0.1", "IP Address that TURN can be contacted on. Should be publicly available."),
 			PortInt:        flag.Int("turn-port", 3478, "Listening port for the TURN/STUN endpoint."),
+			I2p: server.I2pFlags{
+				SamIP:   flag.String("sam-ip", "127.0.0.1", "IP address on which the Simple Anonymous Messaging bridge can be reached"),
+				SamPort: flag.Int("sam-port", 7656, "Port on which the Simple Anonymous Messaging bridge can be reached"),
+			},
 		},
 		Web: server.WebFlags{
 			Port: flag.Int("http-port", 5000, "Web server listening port."),
 		},
-		I2p: server.I2pFlags{
-			SamIP:   flag.String("sam-ip", "127.0.0.1", "IP address on which the Simple Anonymous Messaging bridge can be reached"),
-			SamPort: flag.Int("sam-port", 7656, "Port on which the Simple Anonymous Messaging bridge can be reached"),
-		},
 	}
 
 	flag.Parse()
-	e.Turn.I2p = e.I2p
-	addr := server.Serve(e, *e.Turn.RealmString)
-	defer server.Close()
+	addr := server.Serve(e, "rtchat")
+	//defer server.Close()
 	logger := logging.New(false)
 	logger.Info(addr)
 
