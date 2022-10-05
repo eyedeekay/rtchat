@@ -49,7 +49,12 @@ func Serve(e Flags, appname string) string {
 	}
 
 	defer r.Close()
-	garlic, err := onramp.NewGarlic(appname, e.Turn.SAMAddress(), []string{})
+	garlic, err := onramp.NewGarlic(appname, e.Turn.SAMAddress(),
+		[]string{"inbound.length=1", "outbound.length=1",
+			"inbound.lengthVariance=0", "outbound.lengthVariance=0",
+			"inbound.backupQuantity=2", "outbound.backupQuantity=2",
+			"inbound.quantity=3", "outbound.quantity=3"},
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
