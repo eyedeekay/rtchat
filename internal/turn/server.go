@@ -112,7 +112,7 @@ func (i *I2PRelayAddressGenerator) AllocatePacketConn(network string, requestedP
 
 // Allocate a Conn (TCP) RelayAddress
 func (i *I2PRelayAddressGenerator) AllocateConn(network string, requestedPort int) (net.Conn, net.Addr, error) {
-	/*sess, err := sam.I2PStreamSession("rtcchat-turn-tcp"+strconv.Itoa(requestedPort), i.SAMAddress, "rtcchat-turn-tcp"+strconv.Itoa(requestedPort))
+	sess, err := sam.I2PStreamSession("rtcchat-turn-tcp"+strconv.Itoa(requestedPort), i.SAMAddress, "rtcchat-turn-tcp"+strconv.Itoa(requestedPort))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -128,6 +128,5 @@ func (i *I2PRelayAddressGenerator) AllocateConn(network string, requestedPort in
 	if err != nil {
 		return nil, nil, err
 	}
-	return conn, relayAddr, nil*/
-	return nil, nil, fmt.Errorf("nil connection error")
+	return conn, relayAddr, nil
 }

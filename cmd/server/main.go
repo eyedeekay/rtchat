@@ -35,7 +35,7 @@ func main() {
 
 	flag.Parse()
 	addr := server.Serve(e, "rtchat")
-	//defer server.Close()
+	defer server.Close()
 	logger := logging.New(false)
 	logger.Info(addr)
 
