@@ -20,6 +20,10 @@ import (
 	"github.com/yuukanoo/rtchat/internal/turn"
 )
 
+var garlic *onramp.Garlic
+var l net.Listener
+var s *http.Server
+
 func Serve(e Flags, appname string) string {
 	e.Turn.I2p = e.I2p
 
@@ -49,7 +53,7 @@ func Serve(e Flags, appname string) string {
 	}
 
 	defer r.Close()
-	garlic, err := onramp.NewGarlic(appname, e.Turn.SAMAddress(),
+	garlic, err = onramp.NewGarlic(appname, e.Turn.SAMAddress(),
 		[]string{"inbound.length=1", "outbound.length=1",
 			"inbound.lengthVariance=0", "outbound.lengthVariance=0",
 			"inbound.backupQuantity=2", "outbound.backupQuantity=2",
@@ -58,7 +62,7 @@ func Serve(e Flags, appname string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	l, err := garlic.ListenTLS()
+	l, err = garlic.ListenTLS()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,7 +70,7 @@ func Serve(e Flags, appname string) string {
 	e.Web.Host = l.Addr().(i2pkeys.I2PAddr).Base32()
 	// Launch the HTTP server!
 
-	s := &http.Server{
+	s = &http.Server{
 		Handler:      r.Handler(),
 		Addr:         l.Addr().(i2pkeys.I2PAddr).Base32(),
 		ReadTimeout:  50 * time.Second,
