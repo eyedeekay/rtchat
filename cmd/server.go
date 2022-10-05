@@ -20,7 +20,7 @@ import (
 	"github.com/yuukanoo/rtchat/internal/turn"
 )
 
-func Serve(e Flags) string {
+func Serve(e Flags, appname string) string {
 	e.Turn.I2p = e.I2p
 
 	logger := logging.New(false)
@@ -49,7 +49,7 @@ func Serve(e Flags) string {
 	}
 
 	defer r.Close()
-	garlic, err := onramp.NewGarlic("rtchat", e.Turn.SAMAddress(), []string{})
+	garlic, err := onramp.NewGarlic(appname, e.Turn.SAMAddress(), []string{})
 	if err != nil {
 		log.Fatal(err)
 	}

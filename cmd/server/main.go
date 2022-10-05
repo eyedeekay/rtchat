@@ -20,7 +20,7 @@ import (
 func main() {
 	e := server.Flags{
 		Turn: server.TurnFlags{
-			RealmString:    flag.String("realm", "rtchat.io", "Realm used by the turn server."),
+			RealmString:    flag.String("realm", "rtchat.i2p", "Realm used by the turn server."),
 			PublicIPString: flag.String("turn-ip", "127.0.0.1", "IP Address that TURN can be contacted on. Should be publicly available."),
 			PortInt:        flag.Int("turn-port", 3478, "Listening port for the TURN/STUN endpoint."),
 		},
@@ -35,7 +35,7 @@ func main() {
 
 	flag.Parse()
 	e.Turn.I2p = e.I2p
-	addr := server.Serve(e)
+	addr := server.Serve(e, *e.Turn.RealmString)
 	logger := logging.New(false)
 	logger.Info(addr)
 
