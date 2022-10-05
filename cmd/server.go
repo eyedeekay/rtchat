@@ -1,7 +1,6 @@
 package server
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -21,7 +20,6 @@ import (
 )
 
 func Serve(e Flags) string {
-	flag.Parse()
 	e.Turn.I2p = e.I2p
 
 	logger := logging.New(false)
