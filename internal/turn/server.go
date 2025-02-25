@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/eyedeekay/i2pkeys"
-	sam "github.com/eyedeekay/sam3/helper"
+	"github.com/go-i2p/i2pkeys"
+	sam "github.com/go-i2p/sam3/helper"
 	"github.com/yuukanoo/rtchat/internal/logging"
 	"github.com/yuukanoo/rtchat/internal/service"
 

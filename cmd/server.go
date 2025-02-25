@@ -11,9 +11,9 @@ import (
 	/*	"net"*/
 	"net/http"
 
-	"github.com/eyedeekay/i2pkeys"
+	"github.com/go-i2p/i2pkeys"
 	//sam
-	"github.com/eyedeekay/onramp"
+	"github.com/go-i2p/onramp"
 	"github.com/yuukanoo/rtchat/internal/handler"
 	"github.com/yuukanoo/rtchat/internal/logging"
 	"github.com/yuukanoo/rtchat/internal/service"
